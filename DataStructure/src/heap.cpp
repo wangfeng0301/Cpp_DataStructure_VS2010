@@ -6,15 +6,13 @@
  *E-mail:fengwang0301@163.com
  *CSDN:https://blog.csdn.net/u013073067?spm=1001.2101.3001.5343
  *GitHub:https://github.com/wangfeng0301
- *2019.11.29-2021.2.4
- *2021.2.4	修改，规范函数名
- *			增加，最大堆操作
- *2021.2.5	修改，优化简化代码，不受数据类型限制
+ *2021.5.7
 ************************************************************************/
-#include <stdio.h>
+#include <iostream>
 #include <malloc.h>
 #include <string.h>
 #include "heap.h"
+using namespace std;
 
 /************************************************************************/
 /*功能：判断堆是否满
