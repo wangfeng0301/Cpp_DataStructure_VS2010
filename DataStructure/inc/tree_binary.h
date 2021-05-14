@@ -61,6 +61,9 @@ template <typename T>
 class BinarySearchTree:public BinaryTree<T>//公有继承
 {
 public:
+	BinarySearchTree();//构造函数
+	BinarySearchTree(T dat);
+	~BinarySearchTree();//析构函数
 	bool insertNode(BinaryTreeNode<T> *newpointer);
 	BinaryTreeNode<T> *searchNode(T *dat);
 	bool deleteNode(BinaryTreeNode<T> *pointer);
@@ -93,7 +96,7 @@ template <typename T>
 BinaryTree<T>::~BinaryTree()
 {
 	deleteTree(root);
-	//cout << "~BinaryTree()" << endl;
+	cout << "~BinaryTree()" << endl;
 }
 /************************************************************************/
 /* 功能：判断一个二叉树是否为空树                                                     
@@ -129,7 +132,7 @@ bool BinaryTree<T>::create(const T &dat, BinaryTree<T> &leftTree, BinaryTree<T> 
 	}
 	leftTree.root->parent = root;//左子树的父节点指向新根节点
 	rightTree.root->parent = root;//右子树的父节点指向新根节点
-	leftTree = rightTree = NULL;//原来两棵树根节点置位空，防止非法访问
+	leftTree.root = rightTree.root = NULL;//原来两棵树根节点置位空，防止非法访问
 	return TRUE;
 }
 /************************************************************************/
@@ -143,10 +146,10 @@ void BinaryTree<T>::deleteTree(BinaryTreeNode *root_node)
 {
 	if(root_node != NULL)
 	{
-		deleteTree(root->left);		//后序周游左子树
-		deleteTree(root->right);		//后序周游右子树
-		delete root;				//访问当前节点
-		root = NULL;
+		deleteTree(root_node->left);		//后序周游左子树
+		deleteTree(root_node->right);		//后序周游右子树
+		delete root_node;					//访问当前节点
+		root_node = NULL;
 	}
 }
 /************************************************************************/
@@ -324,14 +327,14 @@ void BinaryTree<T>::postOrderNonRecursion(BinaryTreeNode<T> *root)
 		stack.getTop(&pointertemp);						//左路下降到底，取栈顶元素，即最后一个左子节点
 		if(pointertemp.parent == NULL)					//考虑根节点父节点为空的情况
 			pointer = root;
-		else if(pointertemp.parent->left)				//考虑栈顶节点父节点无左节点的情况，则必然栈顶节点必然是父节点的右节点
+		else if(pointertemp.parent->left && pointertemp.parent->left != q)				//考虑栈顶节点父节点无左节点的情况，则必然栈顶节点必然是父节点的右节点
 			pointer = pointertemp.parent->left;			
 		else
 			pointer = pointertemp.parent->right;
 		if(pointer->right == NULL || pointer->right == q)//从右子树返回
 		{
 			visit(pointer);
-			/* 1.如果取出的节点右节点为空（对应页节点的情况） */
+			/* 1.如果取出的节点右节点为空（对应叶节点的情况），根据后序周游的概念，此时应该访问该节点 */
 			/* 2.如果取出的节点右节点等于q（对应右子节点已经遍历过的情况） */
 			/* 上述两种情况都需要将本节点弹出栈 */
 			stack.pop(&pointertemp);				
@@ -387,6 +390,35 @@ void BinaryTree<T>::levelOrder(BinaryTreeNode<T> *root)
 
 /******************************************** 二叉搜索树 *******************************************************/
 
+/************************************************************************/
+/* 功能：构造函数                                                    
+/* 输入：无
+/* 输出：无
+/* 返回：无
+/************************************************************************/
+template <typename T>
+BinarySearchTree<T>::BinarySearchTree()
+{
+	root = NULL;
+}
+
+template <typename T>
+BinarySearchTree<T>::BinarySearchTree(T dat)
+{
+	root = new BinaryTreeNode<T>(dat, NULL, NULL, NULL);
+}
+/************************************************************************/
+/* 功能：析构函数，销毁二叉树                                                     
+/* 输入：无
+/* 输出：无
+/* 返回：无
+/************************************************************************/
+template <typename T>
+BinarySearchTree<T>::~BinarySearchTree()
+{
+	deleteTree(root);
+	cout << "~BinaryTree()" << endl;
+}
 /*************************************************************************************/
 /*功能：二叉搜索树节点插入算法，按照输入数据大小，自动选择合适的节点插入。
 /*		插入后需符合二叉搜索树的特点，即左树小，右树大

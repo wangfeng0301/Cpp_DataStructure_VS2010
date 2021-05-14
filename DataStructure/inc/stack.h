@@ -228,7 +228,7 @@ bool LinkStack<T>::isEmpty()
 template <typename T>
 bool LinkStack<T>::push(T dat)
 {
-	LinkNode *temp = new LinkNode<T>(dat, top);//实例化对象并赋值
+	LinkNode<T> *temp = new LinkNode<T>(dat, top);//实例化对象并赋值
 	if(temp == NULL)
 	{
 		cout << "申请空间失败" <<endl;
@@ -248,7 +248,7 @@ bool LinkStack<T>::push(T dat)
 template <typename T>
 bool LinkStack<T>::pop(T *dat)
 {
-	LinkNode *tempNode;					//临时节点
+	LinkNode<T> *tempNode;					//临时节点
 
 	if(isEmpty())
 		return FALSE;
@@ -270,7 +270,7 @@ bool LinkStack<T>::pop(T *dat)
 template <typename T>
 bool LinkStack<T>::getTop(T *dat)
 {
-	LinkNode *tempNode;					//临时节点
+	//LinkNode<T> *tempNode;					//临时节点
 
 	if(isEmpty())
 		return FALSE;
@@ -287,7 +287,7 @@ bool LinkStack<T>::getTop(T *dat)
 template <typename T>
 bool LinkStack<T>::clear()
 {
-	LinkNode *temp;
+	LinkNode<T> *temp;
 
 	if(isEmpty())
 		return FALSE;

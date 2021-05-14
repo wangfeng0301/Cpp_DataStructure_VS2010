@@ -36,10 +36,10 @@ int main()
 	//testLinkQueue();
 
 	cout <<"\r\n*************************¶þ²æÊ÷²âÊÔ***************************\r\n" << endl;
-	testBinaryTree();
+	//testBinaryTree();
 
 	cout <<"\r\n**********************¶þ²æËÑË÷Ê÷²âÊÔ**************************\r\n" << endl;
-	//testBinarySearchTree();
+	testBinarySearchTree();
 
 	cout <<"\r\n****************************¶Ñ²âÊÔ****************************\r\n" << endl;
 	//testHeap();

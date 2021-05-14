@@ -38,7 +38,7 @@ void testBinaryTree(void)
 	cout << endl;
 	binary_tree.inOrderNonRecursion(binary_tree.root);
 
-	/*cout << "前序遍历：" << endl;
+	cout << "前序遍历：" << endl;
 	binary_tree.preOrder(binary_tree.root);
 	cout << endl;
 	binary_tree.preOrderNonRecursion(binary_tree.root);
@@ -52,7 +52,7 @@ void testBinaryTree(void)
 	binary_tree.levelOrder(binary_tree.root);
 	cout << endl;
 
-	cout << "删除二叉树" <<endl;
+	/*cout << "删除二叉树" <<endl;
 	binary_tree.deleteTree(binary_tree.root);
 
 	cout << "广度周游：" <<endl;
@@ -60,12 +60,13 @@ void testBinaryTree(void)
 	cout << endl;*/
 }
 
-/*void testBinarySearchTree(void)
+void testBinarySearchTree(void)
 {
 	BinarySearchTree<int> binary_tree;
 	BinarySearchTree<int> binary_tree_left(10);
 	BinarySearchTree<int> binary_tree_right(11);
-	BinaryTreeNode<int> *temp;//临时节点
+	//BinaryTreeNode<int> temp[5] = {10,11,12,13,14};//临时节点
+	int val;
 
 	if(!binary_tree.create(12, binary_tree_left, binary_tree_right))//创建二叉树
 	{
@@ -75,31 +76,32 @@ void testBinaryTree(void)
 
 	for(int i = 0;i<3;i++)//插入10个节点，按照二叉搜索树的形式排列大小
 	{
-		binary_tree.insertNode(&binary_tree.root, i, 0);
+		BinaryTreeNode<int> temp(i);
+		binary_tree.insertNode(&temp);
 	}
 	cout << "中序遍历：" << endl;
-	binary_tree.inOrder(&binary_tree.root);
+	binary_tree.inOrder(binary_tree.root);
 	cout << endl;
-	binary_tree.inOrderNonRecursion(&binary_tree.root);
+	binary_tree.inOrderNonRecursion(binary_tree.root);
 
 	cout << "前序遍历：" << endl;
-	binary_tree.preOrder(&binary_tree.root);
+	binary_tree.preOrder(binary_tree.root);
 	cout << endl;
-	binary_tree.preOrderNonRecursion(&binary_tree.root);
+	binary_tree.preOrderNonRecursion(binary_tree.root);
 
 	cout << "后续遍历：" << endl;
-	binary_tree.postOrder(&binary_tree.root);
+	binary_tree.postOrder(binary_tree.root);
 	cout << endl;
-	binary_tree.postOrderNonRecursion(&binary_tree.root);
+	binary_tree.postOrderNonRecursion(binary_tree.root);
 
 	cout << "广度周游：" <<endl;
-	binary_tree.levelOrder(&binary_tree.root);
+	binary_tree.levelOrder(binary_tree.root);
 	cout << endl;
 
-	if(NULL != (temp = BinarySearchTree_SearchNode(&root, &val[1])))
-		BinarySearchTree_DeleteNode(&root, temp);//删除节点
-	printf("中序遍历：\r\n");
-	BinarySearchTree_InOrder(&root, root.root);
-	printf("\r\n");
-	BinaryTree_InOrderNonRecursion(&root, root.root);
-}*/
+	if(NULL != (temp = binary_tree.searchNode(&val)))
+		binary_tree.deleteNode(temp);//删除节点
+	cout << "中序遍历：" << endl;
+	binary_tree.inOrder(binary_tree.root);
+	cout << endl;
+	binary_tree.inOrderNonRecursion(binary_tree.root);
+}
