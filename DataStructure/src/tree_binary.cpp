@@ -63,22 +63,28 @@ void testBinaryTree(void)
 void testBinarySearchTree(void)
 {
 	BinarySearchTree<int> binary_tree;
-	BinarySearchTree<int> binary_tree_left(10);
-	BinarySearchTree<int> binary_tree_right(11);
-	//BinaryTreeNode<int> temp[5] = {10,11,12,13,14};//临时节点
-	int val;
-
-	if(!binary_tree.create(12, binary_tree_left, binary_tree_right))//创建二叉树
+	//BinarySearchTree<int> binary_tree_left(10);
+	//BinarySearchTree<int> binary_tree_right(11);
+	BinaryTreeNode<int> *temp;//临时节点指针
+	int val[10] = {34,74,2,17,48,27,5,9,10,22};//{34,74,2,17,48,27,5,9,10,22}
+	for(int i = 0;i<sizeof(val)/sizeof(int);i++)//插入10个节点，按照二叉搜索树的形式排列大小
 	{
-		cout << "创建二叉树失败" << endl;
-		return;
+		temp = new BinaryTreeNode<int>(val[i]);
+		binary_tree.insertNode(temp);
 	}
+	/*                     34
+	 *              /                \
+	 *            2                   74
+	 *         /    \                /  \
+	 *        空    17             48   空
+	 *            /    \
+	 *           5      27
+	 *          / \     / \
+	 *        空   9   22 空
+	 *            / \
+	 *          空   10
+	 */
 
-	for(int i = 0;i<3;i++)//插入10个节点，按照二叉搜索树的形式排列大小
-	{
-		BinaryTreeNode<int> temp(i);
-		binary_tree.insertNode(&temp);
-	}
 	cout << "中序遍历：" << endl;
 	binary_tree.inOrder(binary_tree.root);
 	cout << endl;
@@ -98,7 +104,7 @@ void testBinarySearchTree(void)
 	binary_tree.levelOrder(binary_tree.root);
 	cout << endl;
 
-	if(NULL != (temp = binary_tree.searchNode(&val)))
+	if(NULL != (temp = binary_tree.searchNode(&val[0])))//删除根节点
 		binary_tree.deleteNode(temp);//删除节点
 	cout << "中序遍历：" << endl;
 	binary_tree.inOrder(binary_tree.root);

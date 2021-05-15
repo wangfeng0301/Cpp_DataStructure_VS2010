@@ -24,17 +24,34 @@ public:
 		right = right_node;
 		parent = parent_node;
 	}
+	BinaryTreeNode(T node_dat)//构造函数
+	{
+		dat = node_dat;
+		left = NULL;
+		right = NULL;
+		parent = NULL;
+		cout << "BinaryTreeNode(T node_dat)" << endl;
+	}
 	BinaryTreeNode()//必须要有空参数的默认构造函数，否则编译出错
 	{
 		//cout << "BinaryTreeNode()" << endl;
 	}
-	~BinaryTreeNode(){};//析构函数
-	T vaule(){return dat};
+	~BinaryTreeNode()//析构函数
+	{
+		left = NULL;
+		right = NULL;
+		parent = NULL;
+	}
+	T value()
+	{
+		return dat;
+	}
 	T dat;						//数据
 	BinaryTreeNode<T> *left;	//左子节点指针
 	BinaryTreeNode<T> *right;	//右子节点指针
 	BinaryTreeNode<T> *parent;	//指向父节点指针
 };
+
 template <typename T>
 class BinaryTree:public BinaryTreeNode<T>//公有继承
 {
@@ -84,7 +101,7 @@ BinaryTree<T>::BinaryTree()
 template <typename T>
 BinaryTree<T>::BinaryTree(T dat)
 {
-	root = new BinaryTreeNode<T>(dat, NULL, NULL, NULL);
+	root = new BinaryTreeNode<T>(dat);
 }
 /************************************************************************/
 /* 功能：析构函数，销毁二叉树                                                     
@@ -142,7 +159,7 @@ bool BinaryTree<T>::create(const T &dat, BinaryTree<T> &leftTree, BinaryTree<T> 
 /* 返回：TRUE or FALSE
 /************************************************************************/
 template <typename T>
-void BinaryTree<T>::deleteTree(BinaryTreeNode *root_node)
+void BinaryTree<T>::deleteTree(BinaryTreeNode<T> *root_node)
 {
 	if(root_node != NULL)
 	{
@@ -150,6 +167,7 @@ void BinaryTree<T>::deleteTree(BinaryTreeNode *root_node)
 		deleteTree(root_node->right);		//后序周游右子树
 		delete root_node;					//访问当前节点
 		root_node = NULL;
+		root = NULL;
 	}
 }
 /************************************************************************/
@@ -249,7 +267,7 @@ void BinaryTree<T>::postOrder(BinaryTreeNode<T> *root_node)
 /* 前序周游二叉树,非递归方法                                            */
 /************************************************************************/
 template <typename T>
-void BinaryTree<T>::preOrderNonRecursion(BinaryTreeNode *root)
+void BinaryTree<T>::preOrderNonRecursion(BinaryTreeNode<T> *root)
 {
 	BinaryTreeNode<T> *pointer = root;
 	BinaryTreeNode<T> pointertemp;
@@ -327,21 +345,34 @@ void BinaryTree<T>::postOrderNonRecursion(BinaryTreeNode<T> *root)
 		stack.getTop(&pointertemp);						//左路下降到底，取栈顶元素，即最后一个左子节点
 		if(pointertemp.parent == NULL)					//考虑根节点父节点为空的情况
 			pointer = root;
-		else if(pointertemp.parent->left && pointertemp.parent->left != q)				//考虑栈顶节点父节点无左节点的情况，则必然栈顶节点必然是父节点的右节点
+		else if(pointertemp.parent->left && pointertemp.parent->left != q)//考虑栈顶节点父节点无左节点的情况，则必然栈顶节点必然是父节点的右节点
 			pointer = pointertemp.parent->left;			
 		else
 			pointer = pointertemp.parent->right;
-		if(pointer->right == NULL || pointer->right == q)//从右子树返回
+		if(pointer->right == NULL || pointer->right == q)//该节点的右子节点为空，或者右子节点已经被访问过，则访问该节点
 		{
 			visit(pointer);
 			/* 1.如果取出的节点右节点为空（对应叶节点的情况），根据后序周游的概念，此时应该访问该节点 */
 			/* 2.如果取出的节点右节点等于q（对应右子节点已经遍历过的情况） */
 			/* 上述两种情况都需要将本节点弹出栈 */
-			stack.pop(&pointertemp);				
+			stack.pop(&pointertemp);
+			/* 1.该节点（pointer）不是父节点的右子节点，且该节点的右兄弟为空，则直接访问该节点的父节点*/
+			/* 2.该节点（pointer）是父节点的右节点，则直接访问父节点*/
+			while((pointer->parent->right == NULL && pointer->parent->right != pointer) 
+				   || (pointer->parent->right == pointer))
+			{
+				stack.pop(&pointertemp);			//父节点出栈
+				//if(pointertemp->right != pointer)	//理论上pointer应该是父节点的右节点
+				//	exit -1;
+				visit(&pointertemp);
+				pointer = pointer->parent;
+				if(pointer->parent == NULL)			//考虑根节点没有父节点
+					break;
+			}
 			q = pointer;
 			pointer = NULL;
 		}
-		else											//如果从右子树返回
+		else
 		{
 			pointer = pointer->right;					//从左子树返回，访问右子树
 		}
@@ -405,7 +436,7 @@ BinarySearchTree<T>::BinarySearchTree()
 template <typename T>
 BinarySearchTree<T>::BinarySearchTree(T dat)
 {
-	root = new BinaryTreeNode<T>(dat, NULL, NULL, NULL);
+	root = new BinaryTreeNode<T>(dat);
 }
 /************************************************************************/
 /* 功能：析构函数，销毁二叉树                                                     
@@ -442,6 +473,7 @@ bool BinarySearchTree<T>::insertNode(BinaryTreeNode<T> *newpointer)
 	}
 	else
 		pointer = root;
+
 	while(pointer != NULL)
 	{
 		if(newpointer->value() == pointer->value())			//存在相等元素则不插入
@@ -490,7 +522,7 @@ BinaryTreeNode<T> *BinarySearchTree<T>::searchNode(T *dat)
 {
 	BinaryTreeNode<T> *pointer = NULL;
 
-	if(isEmpty())						//如果是空树
+	if(isEmpty())
 	{
 		cout << "二叉树为空！" << endl;
 		return NULL;
@@ -501,10 +533,10 @@ BinaryTreeNode<T> *BinarySearchTree<T>::searchNode(T *dat)
 	{
 		if(*dat == pointer->value())									
 		{
-			cout << "找到： " << pointervalue << endl;
+			cout << "找到： " << pointer->value() << endl;
 			return pointer;
 		}
-		else if(*dat < pointer->value())				//要查找的值小于当前节点值，向左查找
+		else if(*dat < pointer->value())					//要查找的值小于当前节点值，向左查找
 		{
 			if(pointer->left == NULL)										
 			{
@@ -512,17 +544,17 @@ BinaryTreeNode<T> *BinarySearchTree<T>::searchNode(T *dat)
 				return NULL;
 			}
 			else
-				pointer = pointer->left;				//向左下降
+				pointer = pointer->left;					//向左下降
 		}
-		else if(*dat > pointer->value())				//要查找的值大于当前节点值，向右查找
+		else if(*dat > pointer->value())					//要查找的值大于当前节点值，向右查找
 		{
-			if(pointer->right == NULL)					//如果pointer没有右子树
+			if(pointer->right == NULL)						//如果pointer没有右子树
 			{
 				cout << "此二叉树中不存在此值！" << endl;
 				return NULL;
 			}
 			else
-				pointer = pointer->right;				//向右下降
+				pointer = pointer->right;					//向右下降
 		}
 	}
 	cout << "此二叉树中不存在此值！" << endl;
@@ -538,8 +570,8 @@ BinaryTreeNode<T> *BinarySearchTree<T>::searchNode(T *dat)
 template <typename T>
 bool BinarySearchTree<T>::deleteNode(BinaryTreeNode<T> *pointer)
 {
-	BinaryTreeNode_t *temppointer;							//用于保存替换被删除节点的节点
-	BinaryTreeNode_t *tempparent = NULL;					//用于保存替换节点的父节点
+	BinaryTreeNode<T> *temppointer;							//用于保存替换被删除节点的节点
+	BinaryTreeNode<T> *tempparent = NULL;					//用于保存替换节点的父节点
 	if(pointer == NULL)										//待删除节点不存在
 	{
 		cout << "节点不存在！" << endl;
@@ -564,9 +596,12 @@ bool BinarySearchTree<T>::deleteNode(BinaryTreeNode<T> *pointer)
 		temppointer->parent = pointer->parent;				//继承pointer的父节点
 	}
 
-	//下面用替换节点代替待删除节点
+	/*下面用替换节点代替待删除节点*/
 	if(pointer->parent == NULL)								//被删除节点为根节点
+	{
 		temppointer->parent = NULL;
+		this->root = temppointer;
+	}
 	else if(pointer->parent->left == pointer)				//被删除节点挂在其父节点的左子树
 		pointer->parent->left = temppointer;
 	else													//被删除节点挂在其父节点的右子树
