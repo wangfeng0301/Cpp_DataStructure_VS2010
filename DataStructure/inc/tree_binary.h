@@ -147,9 +147,9 @@ bool BinaryTree<T>::create(const T &dat, BinaryTree<T> &leftTree, BinaryTree<T> 
 		cout << "分配内存失败" << endl;
 		return FALSE;
 	}
-	leftTree.root->parent = root;//左子树的父节点指向新根节点
-	rightTree.root->parent = root;//右子树的父节点指向新根节点
-	leftTree.root = rightTree.root = NULL;//原来两棵树根节点置位空，防止非法访问
+	leftTree.root->parent = root;						//左子树的父节点指向新根节点
+	rightTree.root->parent = root;						//右子树的父节点指向新根节点
+	leftTree.root = rightTree.root = NULL;				//原来两棵树根节点置位空，防止非法访问
 	return TRUE;
 }
 /************************************************************************/
@@ -163,9 +163,9 @@ void BinaryTree<T>::deleteTree(BinaryTreeNode<T> *root_node)
 {
 	if(root_node != NULL)
 	{
-		deleteTree(root_node->left);		//后序周游左子树
-		deleteTree(root_node->right);		//后序周游右子树
-		delete root_node;					//访问当前节点
+		deleteTree(root_node->left);					//后序周游左子树
+		deleteTree(root_node->right);					//后序周游右子树
+		delete root_node;								//访问当前节点
 		root_node = NULL;
 		root = NULL;
 	}
@@ -232,9 +232,9 @@ void BinaryTree<T>::preOrder(BinaryTreeNode<T> *root_node)
 {
 	if(root_node != NULL)
 	{
-		visit(root_node);				//访问当前节点
-		preOrder(root_node->left);		//前序周游左子树
-		preOrder(root_node->right);		//前序周游右子树
+		visit(root_node);								//访问当前节点
+		preOrder(root_node->left);						//前序周游左子树
+		preOrder(root_node->right);						//前序周游右子树
 	}
 }
 /************************************************************************/
@@ -245,9 +245,9 @@ void BinaryTree<T>::inOrder(BinaryTreeNode<T> *root_node)
 {
 	if(root_node != NULL)
 	{
-		inOrder(root_node->left);		//中序周游左子树
-		visit(root_node);				//访问当前节点
-		inOrder(root_node->right);		//中序周游右子树
+		inOrder(root_node->left);						//中序周游左子树
+		visit(root_node);								//访问当前节点
+		inOrder(root_node->right);						//中序周游右子树
 	}
 }
 /************************************************************************/
@@ -258,9 +258,9 @@ void BinaryTree<T>::postOrder(BinaryTreeNode<T> *root_node)
 {
 	if(root_node != NULL)
 	{
-		postOrder(root_node->left);		//后序周游左子树
-		postOrder(root_node->right);		//后序周游右子树
-		visit(root_node);				//访问当前节点
+		postOrder(root_node->left);						//后序周游左子树
+		postOrder(root_node->right);					//后序周游右子树
+		visit(root_node);								//访问当前节点
 	}
 }
 /************************************************************************/
@@ -345,7 +345,8 @@ void BinaryTree<T>::postOrderNonRecursion(BinaryTreeNode<T> *root)
 		stack.getTop(&pointertemp);						//左路下降到底，取栈顶元素，即最后一个左子节点
 		if(pointertemp.parent == NULL)					//考虑根节点父节点为空的情况
 			pointer = root;
-		else if(pointertemp.parent->left && pointertemp.parent->left != q)//考虑栈顶节点父节点无左节点的情况，则必然栈顶节点必然是父节点的右节点
+		/*考虑栈顶节点父节点无左节点的情况，则必然栈顶节点必然是父节点的右节点*/
+		else if(pointertemp.parent->left && pointertemp.parent->left != q)
 			pointer = pointertemp.parent->left;			
 		else
 			pointer = pointertemp.parent->right;
@@ -361,12 +362,10 @@ void BinaryTree<T>::postOrderNonRecursion(BinaryTreeNode<T> *root)
 			while((pointer->parent->right == NULL && pointer->parent->right != pointer) 
 				   || (pointer->parent->right == pointer))
 			{
-				stack.pop(&pointertemp);			//父节点出栈
-				//if(pointertemp->right != pointer)	//理论上pointer应该是父节点的右节点
-				//	exit -1;
+				stack.pop(&pointertemp);				//父节点出栈
 				visit(&pointertemp);
 				pointer = pointer->parent;
-				if(pointer->parent == NULL)			//考虑根节点没有父节点
+				if(pointer->parent == NULL)				//考虑根节点没有父节点
 					break;
 			}
 			q = pointer;

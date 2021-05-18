@@ -4,9 +4,9 @@
 #include "linkedlist_double.h"
 #include "stack.h"
 #include "queue.h"
-//#include "string_my.h"
 #include "tree_binary.h"
-//#include "heap.h"
+#include "heap.h"
+#include "tree_huffman.h"
 //#include "tree.h"
 //#include "sort.h"
 //#include "application.h"
@@ -39,13 +39,13 @@ int main()
 	//testBinaryTree();
 
 	cout <<"\r\n**********************¶þ²æËÑË÷Ê÷²âÊÔ**************************\r\n" << endl;
-	testBinarySearchTree();
+	//testBinarySearchTree();
 
 	cout <<"\r\n****************************¶Ñ²âÊÔ****************************\r\n" << endl;
 	//testHeap();
 
 	cout <<"\r\n*********************** HuffmanÊ÷²âÊÔ ************************\r\n" << endl;
-	//testHuffmanTree();
+	testHuffmanTree();
 
 	cout <<"\r\n***************************Ê÷²âÊÔ*****************************\r\n" << endl;
 	//testTree();

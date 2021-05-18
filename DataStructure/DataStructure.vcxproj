@@ -83,7 +83,6 @@
     <ClInclude Include="inc\heap.h" />
     <ClInclude Include="inc\linkedlist_double.h" />
     <ClInclude Include="inc\linkedlist_single.h" />
-    <ClInclude Include="inc\misc.h" />
     <ClInclude Include="inc\queue.h" />
     <ClInclude Include="inc\search.h" />
     <ClInclude Include="inc\sort.h" />
@@ -98,15 +97,10 @@
     <ClCompile Include="src\application.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\heap.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="src\heap.cpp" />
     <ClCompile Include="src\linkedlist_double.cpp" />
     <ClCompile Include="src\linkedlist_single.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\misc.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="src\queue.cpp" />
     <ClCompile Include="src\search.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -119,9 +113,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\tree_binary.cpp" />
-    <ClCompile Include="src\tree_huffman.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="src\tree_huffman.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
