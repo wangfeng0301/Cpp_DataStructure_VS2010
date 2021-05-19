@@ -8,7 +8,7 @@
 #include "heap.h"
 #include "tree_huffman.h"
 //#include "tree.h"
-//#include "sort.h"
+#include "sort.h"
 //#include "application.h"
 using namespace std;
 
@@ -45,13 +45,13 @@ int main()
 	//testHeap();
 
 	cout <<"\r\n*********************** HuffmanÊ÷²âÊÔ ************************\r\n" << endl;
-	testHuffmanTree();
+	//testHuffmanTree();
 
 	cout <<"\r\n***************************Ê÷²âÊÔ*****************************\r\n" << endl;
 	//testTree();
 
 	cout <<"\r\n**************************ÅÅÐò²âÊÔ****************************\r\n" << endl;
-	//testSort();
+	testSort();
 
 	cout <<"\r\n******************** josephusÎÊÌâ²âÊÔ ************************\r\n" << endl;
 	//josephus(5,2,2);

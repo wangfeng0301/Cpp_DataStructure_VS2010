@@ -5,9 +5,10 @@
 *参考资料：《数据结构与算法》张铭，王腾蛟，赵海燕等
 **********************************************************************/
 #include <stdio.h>
-#include <malloc.h>
+//#include <malloc.h>
 #include "sort.h"
 
+#if 0
 /************************************************************************/
 /* 直接插入排序
 /* Array[]：待排序数组
@@ -611,25 +612,31 @@ void AdjustRecord(Record *Array,int* IndexArray,int n)
 	}
 }
 /**********************************************索引排序结束*********************************************************/
-
-
+#endif
 
 
 void testSort(void)
 {
 	int i;
-	Record testArray[] = {{97},{53},{88},{59},{26},{41},{88},{31},{22}};
-	Record tempArray[] = {{97},{53},{88},{59},{26},{41},{88},{31},{22}};//保存数组值
-	int ArraySize = sizeof(testArray)/sizeof(Record);
-	Record TempArray[9];							//归并排序用
-	int IndexArray[9];							//索引排序用
+	int dat[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+	int key[9] = {97,53,88,59,26,41,88,31,22};
+	Record<int> testArray[9];// = {{97,1},{53,2},{88,3},{59,4},{26,5},{41,6},{88,7},{31,8},{22,9}};
+	Record<int> tempArray[9];// = {{97},{53},{88},{59},{26},{41},{88},{31},{22}};//保存数组值
+	int ArraySize = sizeof(key)/sizeof(key[0]);
+	//Record TempArray[9];							//归并排序用
+	//int IndexArray[9];							//索引排序用
+	Sort<int> sort;
 
-	printf("原始序列：  ");
+	cout << "原始序列：   " ;
 	for(i = 0;i<ArraySize;i++)
-		printf("%d ",testArray[i].SortKey);
-	printf("\r\n");
+	{
+		testArray[i].key = key[i];
+		testArray[i].dat = dat[i];
+		cout << testArray[i].key << "(" << testArray[i].dat << ")" << " ";
+	}
+	cout << endl;
 
-	printf("直接插入排序:");
+	/*printf("直接插入排序:");
 	InsertSort(testArray,ArraySize);
 	for(i = 0;i<ArraySize;i++)
 		printf("%d ",testArray[i].SortKey);
@@ -657,17 +664,31 @@ void testSort(void)
 	HeapSort(testArray,ArraySize);
 	for(i = 0;i<ArraySize;i++)
 		printf("%d ",testArray[i].SortKey);
-	printf("\r\n");
+	printf("\r\n");*/
 
 	for(i = 0;i<ArraySize;i++)		//重新赋值
-		testArray[i] = tempArray[i];
-	printf("冒泡排序:    ");
-	BubbleSort(testArray,ArraySize);
+	{
+		testArray[i].key = key[i];
+		testArray[i].dat = dat[i];
+	}
+	cout << "冒泡排序(升序): ";
+	sort.bubbleSort(testArray,ArraySize,0);
 	for(i = 0;i<ArraySize;i++)
-		printf("%d ",testArray[i].SortKey);
-	printf("\r\n");
+		cout << testArray[i].key << "(" << testArray[i].dat << ")" << " ";
+	cout << endl;
 
 	for(i = 0;i<ArraySize;i++)		//重新赋值
+	{
+		testArray[i].key = key[i];
+		testArray[i].dat = dat[i];
+	}
+	cout << "冒泡排序(降序): ";
+	sort.bubbleSort(testArray,ArraySize,1);
+	for(i = 0;i<ArraySize;i++)
+		cout << testArray[i].key << "(" << testArray[i].dat << ")" << " ";
+	cout << endl;
+
+	/*for(i = 0;i<ArraySize;i++)		//重新赋值
 		testArray[i] = tempArray[i];
 	printf("快速排序:    ");
 	QuickSort(testArray,0,ArraySize-1);
@@ -721,5 +742,5 @@ void testSort(void)
 	IndexSort(testArray,IndexArray,ArraySize);
 	for(i = 0;i<ArraySize;i++)
 		printf("%d ",testArray[i].SortKey);
-	printf("\r\n");
+	printf("\r\n");*/
 }
