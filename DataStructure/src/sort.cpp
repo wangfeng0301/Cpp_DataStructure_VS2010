@@ -614,41 +614,68 @@ void AdjustRecord(Record *Array,int* IndexArray,int n)
 /**********************************************索引排序结束*********************************************************/
 #endif
 
-
+template <typename T>
+static void display(Record<T> *Array, int size)
+{
+	for(int i = 0;i<size;i++)
+		cout << Array[i].key << "(" << Array[i].dat << ")" << " ";
+	cout << endl;
+}
+template <typename T>
+static void Key2Record(Record<T> *Array, T *dat, int *key, int size)
+{
+	for(int i = 0;i<size;i++)		//重新赋值
+	{
+		Array[i].key = key[i];
+		Array[i].dat = dat[i];
+	}
+}
 void testSort(void)
 {
-	int i;
 	int dat[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 	int key[9] = {97,53,88,59,26,41,88,31,22};
 	Record<int> testArray[9];// = {{97,1},{53,2},{88,3},{59,4},{26,5},{41,6},{88,7},{31,8},{22,9}};
-	Record<int> tempArray[9];// = {{97},{53},{88},{59},{26},{41},{88},{31},{22}};//保存数组值
+	//Record<int> tempArray[9];// = {{97},{53},{88},{59},{26},{41},{88},{31},{22}};//保存数组值
 	int ArraySize = sizeof(key)/sizeof(key[0]);
 	//Record TempArray[9];							//归并排序用
 	//int IndexArray[9];							//索引排序用
 	Sort<int> sort;
 
-	cout << "原始序列：   " ;
-	for(i = 0;i<ArraySize;i++)
-	{
-		testArray[i].key = key[i];
-		testArray[i].dat = dat[i];
-		cout << testArray[i].key << "(" << testArray[i].dat << ")" << " ";
-	}
-	cout << endl;
+	cout << "原始序列：      " ;
+	Key2Record(testArray, dat, key, ArraySize);
+	display(testArray, ArraySize);
 
-	/*printf("直接插入排序:");
-	InsertSort(testArray,ArraySize);
-	for(i = 0;i<ArraySize;i++)
-		printf("%d ",testArray[i].SortKey);
-	printf("\r\n");
+	cout << "冒泡排序(升序): ";
+	Key2Record(testArray, dat, key, ArraySize);
+	sort.bubbleSort(testArray,ArraySize,0);
+	display(testArray, ArraySize);
 
-	for(i = 0;i<ArraySize;i++)		//重新赋值
-		testArray[i] = tempArray[i];
-	printf("Shell排序:   ");
-	ShellSort(testArray,ArraySize);
-	for(i = 0;i<ArraySize;i++)
-		printf("%d ",testArray[i].SortKey);
-	printf("\r\n");
+	cout << "冒泡排序(降序): ";
+	Key2Record(testArray, dat, key, ArraySize);
+	sort.bubbleSort(testArray,ArraySize,1);
+	display(testArray, ArraySize);
+
+	printf("快速排序:       ");
+	Key2Record(testArray, dat, key, ArraySize);
+	sort.quickSort(testArray,0,ArraySize-1);
+	display(testArray, ArraySize);
+
+	printf("快速排序(优化): ");
+	Key2Record(testArray, dat, key, ArraySize);
+	sort.quickSort(testArray,ArraySize);
+	display(testArray, ArraySize);
+
+	printf("直接插入排序:   ");
+	Key2Record(testArray, dat, key, ArraySize);
+	sort.insertSort(testArray,ArraySize);
+	display(testArray, ArraySize);
+
+	printf("Shell排序:      ");
+	Key2Record(testArray, dat, key, ArraySize);
+	sort.shellSort(testArray,ArraySize);
+	display(testArray, ArraySize);
+
+	/*
 
 	for(i = 0;i<ArraySize;i++)		//重新赋值
 		testArray[i] = tempArray[i];
@@ -666,35 +693,9 @@ void testSort(void)
 		printf("%d ",testArray[i].SortKey);
 	printf("\r\n");*/
 
-	for(i = 0;i<ArraySize;i++)		//重新赋值
-	{
-		testArray[i].key = key[i];
-		testArray[i].dat = dat[i];
-	}
-	cout << "冒泡排序(升序): ";
-	sort.bubbleSort(testArray,ArraySize,0);
-	for(i = 0;i<ArraySize;i++)
-		cout << testArray[i].key << "(" << testArray[i].dat << ")" << " ";
-	cout << endl;
+	
 
-	for(i = 0;i<ArraySize;i++)		//重新赋值
-	{
-		testArray[i].key = key[i];
-		testArray[i].dat = dat[i];
-	}
-	cout << "冒泡排序(降序): ";
-	sort.bubbleSort(testArray,ArraySize,1);
-	for(i = 0;i<ArraySize;i++)
-		cout << testArray[i].key << "(" << testArray[i].dat << ")" << " ";
-	cout << endl;
-
-	/*for(i = 0;i<ArraySize;i++)		//重新赋值
-		testArray[i] = tempArray[i];
-	printf("快速排序:    ");
-	QuickSort(testArray,0,ArraySize-1);
-	for(i = 0;i<ArraySize;i++)
-		printf("%d ",testArray[i].SortKey);
-	printf("\r\n");
+	/*
 
 	for(i = 0;i<ArraySize;i++)		//重新赋值
 		testArray[i] = tempArray[i];
