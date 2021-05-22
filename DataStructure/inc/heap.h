@@ -23,14 +23,15 @@ template <typename T>
 class Heap:public HeapNode<T>//公有继承
 {
 public:
-	Heap(T *dat, int *key, int size, int maxsize, uchar tag);//构造函数
+	Heap(T *dat, int *key, int size, int max_size, uchar tag);//构造函数
+	Heap(int max_size);//构造函数
 	Heap();
 	~Heap();//析构函数
 	bool isFull();
 	bool isEmpty();
 	void siftDown(int parent, uchar tag);
 	void siftUp(int pos, uchar tag);
-	bool create(T *dat, int *key, int size, int maxsize, uchar tag);
+	bool create(T *dat, int *key, int size, int max_size, uchar tag);
 	bool insert(int key, T &dat, uchar tag);
 	bool remove(HeapNode<T> *node, int pos, uchar tag);
 	bool removeHeapTop(HeapNode<T> *node, uchar tag);
@@ -44,7 +45,8 @@ template <typename T>
 class MinHeap:public Heap<T>
 {
 public:
-	MinHeap(T *dat, int *key, int size, int maxsize);
+	MinHeap(T *dat, int *key, int size, int max_size);
+	MinHeap(int max_size);
 	//bool create(T *dat, int *key, int size, int maxsize);
 	bool insert(int key, T &dat);
 	bool remove(HeapNode<T> *node, int pos);
@@ -54,7 +56,8 @@ template <typename T>
 class MaxHeap:public Heap<T>
 {
 public:
-	MaxHeap(T *dat, int *key, int size, int maxsize);
+	MaxHeap(T *dat, int *key, int size, int max_size);
+	MaxHeap(int max_size);
 	//bool create(T *dat, int *key, int size, int maxsize);
 	bool insert(int key, T &dat);
 	bool remove(HeapNode<T> *node, int pos);
@@ -67,14 +70,22 @@ public:
 /* 返回：无
 /************************************************************************/
 template <typename T>
-Heap<T>::Heap(T *dat, int *key, int size, int maxsize, uchar tag)
+Heap<T>::Heap(T *dat, int *key, int size, int max_size, uchar tag)
 {
-	this->create(dat, key, size, maxsize, tag);
+	this->create(dat, key, size, max_size, tag);
+}
+template <typename T>
+Heap<T>::Heap(int max_size)
+{
+	this->array = new HeapNode<T>[max_size];
+	this->currsize = 0;
+	this->maxsize = max_size;
+	//cout << "Heap(int maxsize)" << endl;
 }
 template <typename T>
 Heap<T>::Heap()
 {
-	
+	//cout << "Heap()" << endl;
 }
 /************************************************************************/
 /* 功能：析构函数,释放堆                                                   
@@ -92,7 +103,7 @@ Heap<T>::~Heap()
 	}
 	this->maxsize = 0;
 	this->currsize = 0;
-	cout << "~Heap()" << endl;
+	//cout << "~Heap()" << endl;
 }
 /************************************************************************/
 /*功能：判断堆是否满
@@ -203,14 +214,14 @@ void Heap<T>::siftUp(int pos, uchar tag)
 /*返回：TRUE or FALSE
 /************************************************************************/
 template <typename T>
-bool Heap<T>::create(T *dat, int *key, int size, int maxsize, uchar tag)
+bool Heap<T>::create(T *dat, int *key, int size, int max_size, uchar tag)
 {
 	int i;
-	if(maxsize <= 0 || size > maxsize)					//堆数据最大空间必须大于0
+	if(max_size <= 0 || size > max_size)					//堆数据最大空间必须大于0
 		return FALSE;
 	if(/*dat == NULL ||*/ (key == NULL && size > 0))
 		return FALSE;
-	this->array = new HeapNode<T>[maxsize];				//开辟maxsize个空间大小
+	this->array = new HeapNode<T>[max_size];				//开辟maxsize个空间大小
 	if(this->array == NULL)
 		return FALSE;
 	for(i=0;i<size;i++)
@@ -222,7 +233,7 @@ bool Heap<T>::create(T *dat, int *key, int size, int maxsize, uchar tag)
 		this->array[i].key = key[i];
 	}
 	this->currsize = size;								//当前堆中元素个数
-	this->maxsize = maxsize;
+	this->maxsize = max_size;
 	for(i = this->currsize/2-1;i>=0;i--)				//筛选法建堆，从n/2-1开始
 	{
 		this->siftDown( i, tag);
@@ -241,7 +252,7 @@ bool Heap<T>::create(T *dat, int *key, int size, int maxsize, uchar tag)
 template <typename T>
 bool Heap<T>::insert(int key, T &dat, uchar tag)
 {
-	cout << "插入节点键值：" << key <<endl;
+	//cout << "插入节点键值：" << key <<endl;
 	if(this->isFull())
 	{
 		cout << "堆已满" <<endl;
@@ -350,9 +361,14 @@ void Heap<T>::traverse()
 /* 返回：无
 /************************************************************************/
 template <typename T>
-MinHeap<T>::MinHeap(T *dat, int *key, int size, int maxsize)
+MinHeap<T>::MinHeap(T *dat, int *key, int size, int max_size)
 {
-	Heap::create(dat, key, size, maxsize, 0);
+	Heap::create(dat, key, size, max_size, 0);
+}
+template <typename T>
+MinHeap<T>::MinHeap(int max_size)
+{
+	Heap::Heap(max_size);
 }
 /************************************************************************/
 /*功能：建立最小堆结构 
@@ -415,10 +431,20 @@ bool MinHeap<T>::removeMin(HeapNode<T> *node)
 /* 返回：无
 /************************************************************************/
 template <typename T>
-MaxHeap<T>::MaxHeap(T *dat, int *key, int size, int maxsize)
+MaxHeap<T>::MaxHeap(T *dat, int *key, int size, int max_size)
 {
-	Heap::create(dat, key, size, maxsize, 1);
+	Heap::create(dat, key, size, max_size, 1);
 }
+template <typename T>
+MaxHeap<T>::MaxHeap(int max_size)
+{
+	//cout << "MaxHeap(maxsize)" << endl;
+	//Heap::Heap(max_size);
+	this->array = new HeapNode<T>[max_size];
+	currsize = 0;
+	maxsize = max_size;
+}
+
 /************************************************************************/
 /*功能：建立最大堆结构 
 /*输入：dat:堆数据（不含key值）

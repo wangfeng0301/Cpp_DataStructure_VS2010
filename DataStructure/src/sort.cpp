@@ -674,45 +674,33 @@ void testSort(void)
 	Key2Record(testArray, dat, key, ArraySize);
 	sort.shellSort(testArray,ArraySize);
 	display(testArray, ArraySize);
-
-	/*
-
-	for(i = 0;i<ArraySize;i++)		//重新赋值
-		testArray[i] = tempArray[i];
-	printf("直接选择排序:");
-	SelectSort(testArray,ArraySize);
-	for(i = 0;i<ArraySize;i++)
-		printf("%d ",testArray[i].SortKey);
-	printf("\r\n");
-
-	for(i = 0;i<ArraySize;i++)		//重新赋值
-		testArray[i] = tempArray[i];
-	printf("堆排序:      ");
-	HeapSort(testArray,ArraySize);
-	for(i = 0;i<ArraySize;i++)
-		printf("%d ",testArray[i].SortKey);
-	printf("\r\n");*/
-
 	
+	printf("直接选择排序:   ");
+	Key2Record(testArray, dat, key, ArraySize);
+	sort.selectSort(testArray,ArraySize);
+	display(testArray, ArraySize);
+	
+	printf("堆排序:         ");
+	Key2Record(testArray, dat, key, ArraySize);
+	sort.heapSort(testArray,ArraySize);
+	display(testArray, ArraySize);
+
+	printf("归并排序:       ");
+	Key2Record(testArray, dat, key, ArraySize);
+	sort.mergeSort(testArray, ArraySize);
+	display(testArray, ArraySize);
+
+	printf("归并排序(非递归):");
+	Key2Record(testArray, dat, key, ArraySize);
+	sort.mergeSort_Nor(testArray, ArraySize);
+	display(testArray, ArraySize);
+	
+	printf("归并排序(优化): ");
+	Key2Record(testArray, dat, key, ArraySize);
+	sort.modMergeSort(testArray, ArraySize);
+	display(testArray, ArraySize);
 
 	/*
-
-	for(i = 0;i<ArraySize;i++)		//重新赋值
-		testArray[i] = tempArray[i];
-	printf("归并排序:    ");
-	MergeSort(testArray,TempArray,0,ArraySize-1);
-	for(i = 0;i<ArraySize;i++)
-		printf("%d ",testArray[i].SortKey);
-	printf("\r\n");
-
-	for(i = 0;i<ArraySize;i++)		//重新赋值
-		testArray[i] = tempArray[i];
-	printf("优化归并排序:");
-	ModMergeSort(testArray,TempArray,0,ArraySize-1);
-	for(i = 0;i<ArraySize;i++)
-		printf("%d ",testArray[i].SortKey);
-	printf("\r\n");
-
 	for(i = 0;i<ArraySize;i++)		//重新赋值
 		testArray[i] = tempArray[i];
 	printf("桶式排序:    ");
